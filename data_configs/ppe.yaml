@@ -1,17 +1,16 @@
 # Images and labels direcotry should be relative to train.py
-TRAIN_DIR_IMAGES: 'data/ppe/dataset/train'
-TRAIN_DIR_LABELS: 'data/ppe/dataset/train'
-VALID_DIR_IMAGES: 'data/ppe/dataset/test'
-VALID_DIR_LABELS: 'data/ppe/dataset/test'
+TRAIN_DIR_IMAGES: 'data/train'
+TRAIN_DIR_LABELS: 'data/train'
+VALID_DIR_IMAGES: 'data/test'
+VALID_DIR_LABELS: 'data/test'
 
 # Class names.
 CLASSES: [
-    '__background__',
-    'Mask', 'Face_Shield', 'Coverall', 'Gloves', 'Goggles'
-]
+    '0',    '1'
+    ]
 
 # Number of classes (object classes + 1 for background class in Faster RCNN).
-NC: 6
+NC: 2
 
 # Whether to save the predictions of the validation set while training.
 SAVE_VALID_PREDICTION_IMAGES: True
