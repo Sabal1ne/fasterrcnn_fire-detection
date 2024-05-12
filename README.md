@@ -1,102 +1,91 @@
 # README
 
-**Object Detection using PyTorch Faster RCNN ResNet50 FPN V2 trained on PPE datasets**
+**Обнаружение объектов с помощью PyTorch Faster RCNN ResNet50 FPN V2, обученный наборам данных PPE**
 
-PyTorch recently released an improved version of the Faster RCNN object detection model. They call it the Faster RCNN ResNet50 FPN V2. This model is miles ahead in terms of detection quality compared to its predecessor, the original Faster RCNN ResNet50 FPN. In this repo, we will discover what makes the new Faster RCNN model better, why it is better, and what kind of detection results we can expect from it.
-To improve the Faster RCNN ResNet50 (to get the V2 version) model, changes were made to both:
+PyTorch недавно выпустил улучшенную версию более быстрой модели обнаружения объектов RCNN. Они называют это более быстрым RCNN ResNet50 FPN V2. Эта модель намного опережает по качеству обнаружения своего предшественника, оригинального Faster RCNN ResNet50 FPN. В этом репозитории мы узнаем, что делает новую модель Faster RCNN лучше, почему она лучше и каких результатов обнаружения мы можем ожидать от нее.
+Для улучшения более быстрой модели RCNN ResNet50 (для получения версии V2) были внесены изменения в обе:
 
-* The ResNet50 backbone recipe
-* The object detection modules of Faster RCNN
+* Магистральный рецепт ResNet50
+* Модули обнаружения объектов Faster RCNN
 
-### Let’s check out all the points that we will cover in this post:
+### Давайте проверим все моменты, которые мы рассмотрим в этом посте:
 
-* We will fine-tune the Faster RCNN ResNet50 FPN V2 model in this post.
-* For training, we will use a PPE detection dataset.
-* After training, we will analyze the mAP and loss plots.
-* We will also run inference on videos to check how the model performs in real-world scenarios.
+* В этом посте мы доработаем более быструю модель RCNN ResNet50 FPN V2.
+* После обучения мы проанализируем карту и графики потерь.
+* Мы также запустим вывод на основе видео, чтобы проверить, как модель работает в реальных сценариях.
 
-### The PPE Detection Dataset
-To train the object detection model in this post, we will use the COVID-19 PPE Dataset for Object Detection from Kaggle (https://www.kaggle.com/datasets/ialimustufa/object-detection-for-ppe-covid19-dataset).
 
-The dataset contains images of medical personnel wearing PPE kits for the COVID-19 pandemic. It consists of 366 training images and 50 test images across 5 classes. Also, it is worthwhile to note that the dataset is structured in the Pascal VOC XML format.
+### Предварительная подготовка магистрали ResNet50
 
-The class names given on the Kaggle page and those in the XML files slightly mismatch. As we will be using the class names from the XML files, let’s take a look at them:
+Предварительная подготовка магистрали ResNet50 является важной задачей для повышения производительности всей модели обнаружения объектов. Модель ResNet50 (как и многие другие модели классификации) была обучена с использованием нового рецепта обучения. К ним относятся, но не ограничиваются ими:
 
-Mask, Face_Shield, Coverall, Gloves, Goggles
-
-### Pretraining ResNet50 Backbone
-
-Pretraining the ResNet50 backbone is an essential task in improving the performance of the entire object detection model. The ResNet50 (as well as many other classification models) model was trained with a new training recipe. These include, but are not limited to:
-
-* Learning rate optimizations.
-* Longer training.
-* Augmentation such as TrivialAugment, Random Erasing,  MixUp, and CutMix.
-* Repeated Augmentation
+* Оптимизация скорости обучения.
+* Более длительное обучение.
+* Дополнения, такие как TrivialAugment, случайное стирание, MixUp и CutMix.
+* Повторное увеличение
 * EMA
-* Weight Decay Tuning
+* Настройка уменьшения веса
 
-With these new techniques, the ResNet50 Accuracy@1 jumps to 80.858% from the previous 76.130%.
+Благодаря этим новым технологиям точность ResNet50 @ 1 возрастает до 80,858% с прежних 76,130%.
 
-Training the Faster RCNN ResNet50 FPN V2 Model
-As mentioned earlier, most of the improvements to train the entire object detection model were taken from the aforementioned paper.
+Обучение более быстрой модели RCNN ResNet50 FPN V2
+Как упоминалось ранее, большинство улучшений для обучения всей модели обнаружения объектов были взяты из вышеупомянутой статьи.
 
-The contributors to these improvements call these improvements as per post-paper optimization. These include:
+Авторы этих улучшений называют их улучшениями в соответствии с оптимизацией после публикации статьи. К ним относятся:
 
-* FPN with batch normalization.
-* Using two convolutional layers in the Region Proposal * Network (RPN) instead of one. In other words, using a heavier FPN module.
-* Using a heavier box regression head. To be specific, using four convolutional layers with Batch Normalization followed by linear layer. Previously, a two layer MLP head without Batch Normalization was used.
-* No Frozen Batch Normalizations were used.
+* FPN с пакетной нормализацией.
+* Использование двух сверточных уровней в сети Region Proposal * (RPN) вместо одного. Другими словами, использование более мощного модуля FPN.
+* Используя более массивную головку регрессии. Если быть точным, используя четыре сверточных слоя с пакетной нормализацией, за которыми следует линейный слой. Ранее использовалась двухслойная MLP-головка без пакетной нормализации.
+* Нормализации замороженных пакетов не использовались.
 
-Using the above recipe improves the mAP from the previous 37.0% to 46.7%, a whopping 9.7% increase in mAP.
+Использование приведенного выше рецепта улучшает карту с предыдущих 37,0% до 46,7%, что дает колоссальное увеличение карты на 9,7%.
 
-## Directory Structure
+## Структура каталогов
 
-* The data folder contains the dataset for this project in the data/ppe folder. The train and test folders contain the images along with the XML files.
-* The data_configs directory contains the dataset information and configuration. We will look at it at a later stage in the post.
+* Папка data содержит набор данных для этого проекта в папке data / ppe. Папки train и test содержат изображения вместе с файлами XML.
+* Каталог data_configs содержит информацию о наборе данных и конфигурацию. Мы рассмотрим это позже в этом посте.
 
-We have the script for two models in the models directory. One is for the older Faster RCNN ResNet50 FPN and the other is for the FPN V2 one. We can use either one of them during training just by changing one command line flag value.
+У нас есть скрипт для двух моделей в каталоге models. Один предназначен для более старой Faster RCNN ResNet50 FPN, а другой - для FPN V2. Мы можем использовать любой из них во время обучения, просто изменив одно значение флага командной строки.
 
-* The outputs directory will hold all the training outputs.
+* Каталог выходных данных будет содержать все выходные данные обучения.
 
-We have a torch_utils and a utils directory which holds a lot of helper code and training utilities. We will not be diving into the details of these here. But you are free to check them out.
+У нас есть torch_utils и каталог utils, который содержит множество вспомогательного кода и обучающих утилит. Мы не будем здесь углубляться в их детали. Но вы можете сами ознакомиться с ними.
 
-* There are two inference scripts as well, one for image inference and one for video inference. Along with that, we have the datasets.py for preparing the dataset and data loaders. The train.py is the executable script to start the training.
+* Также есть два сценария вывода, один для вывода изображений и один для вывода видео. Наряду с этим, у нас есть datasets.py для подготовки набора данных и загрузчиков данных. The train.py - исполняемый скрипт для запуска обучения.
 
-#### Train the Faster RCNN Model
+#### Обучите более быструю модель RCNN
 
-`python train.py --model fasterrcnn_resnet50_fpn_v2 --config data_configs/ppe.yaml --epochs 50 --project-name fasterrcnn_resnet50_fpn_v2_ppe --use-train-aug --no-mosaic`
+`python train.py --модель fasterrcnn_resnet50_fpn_v2 --конфигурация data_configs/ppe.yaml --эпохи 50 --название проекта fasterrcnn_resnet50_fpn_v2_ppe --использовать-обучать-август --нет-мозаики`
 
-The following are the command line arguments that we use:
+Ниже приведены аргументы командной строки, которые мы используем:
 
-* --model: Here, we use fasterrcnn_resnet50_fpn_v2 to indicate that we want to train the new Faster RCNN model. To train the older model, you can simply provide the value as fasterrcnn_resnet50_fpn.
-* --config: It takes the path to the dataset configuration file which is data/ppe.yaml file in this case.
-* --epochs: We are training the model for 50 epochs.
-* --project-name: Providing a string value to this argument will save the results with that folder name inside outputs/training. In this case, it is going to be outputs/training/fasterrcnn_resnet50_fpn_v2_ppe.
-* --use-train-aug: The data loader supports various image augmentations. This argument is a boolean value that ensures that those augmentations are applied.
-* --no-mosaic: Additionally, the data loader also supports mosaic augmentation. But providing this boolean argument will turn it off.
+* --model: Здесь мы используем fasterrcnn_resnet50_fpn_v2, чтобы указать, что мы хотим обучить новую более быструю модель RCNN. Для обучения старой модели вы можете просто указать значение как fasterrcnn_resnet50_fpn .
+* --config: он принимает путь к файлу конфигурации набора данных, который в данном случае является файлом data / ppe.yaml.
+* --эпохи: Мы обучаем модель для 50 эпох.
+* --project-name: Предоставление строкового значения этому аргументу сохранит результаты с этим именем папки внутри outputs/ training . В этом случае это будут выходные данные / обучение /fasterrcnn_resnet50_fpn_v2_ppe.
+* --use-train-aug: загрузчик данных поддерживает различные расширения изображения. Этот аргумент является логическим значением, которое гарантирует, что эти расширения будут применены.
+* --no-mosaic: Кроме того, загрузчик данных также поддерживает расширение мозаики. Но предоставление этого логического аргумента отключит его.
 
-You can also get the trained model here: https://drive.google.com/drive/folders/15j7tPtCfyhb2yhN4ovS6pHag8ARFt2gL?usp=sharing which will be then placed in a folder training inside the outputs folder.
+#### Выполняется detect_video.py для вывода видео
 
-#### Executing detect_video.py for Video Inference
+`python inference_video.py --взвешивает выходные данные / обучение /fasterrcnn_resnet50_fpn_v2_ppe/best_model.pth --входные данные/inference_data/video_1.mp4 --показать изображение --пороговое значение 0.9 /`
 
-`python inference_video.py --weights outputs/training/fasterrcnn_resnet50_fpn_v2_ppe/best_model.pth --input data/inference_data/video_1.mp4 --show-image --threshold 0.9 /`
+Ниже приведены аргументы командной строки:
 
-The following are the command line arguments:
+* --weights: путь к файлу weights. Здесь мы используем наиболее подготовленные веса.
+* --input: путь к исходному видео. Вы также можете указать путь к своим собственным видео.
+* --показать-изображение: это сообщает скрипту, что мы хотим визуализировать результаты на экране.
+* --threshold: Мы используем доверительный порог в 90% для визуализаций.
 
-* --weights: Path to the weights file. We are using best-trained weights here.
-* --input: Path to the source video. You may give the path to your own videos as well.
-* --show-image: This tells the script that we want to visualize the results on the screen.
-* --threshold: We are using a confidence threshold of 90% for the visualizations.
-
-## Important Links
+## Важные ссылки
 
 * https://github.com/pytorch/vision/pull/5763
 * https://github.com/pytorch/vision/pull/5444
 * https://github.com/pytorch/vision/issues/5307
 * https://github.com/pytorch/vision/issues/3995
-* Improving the Backbones - How to Train State-Of-The-Art Models Using TorchVision’s Latest Primitives => https://pytorch.org/blog/how-to-train-state-of-the-art-models-using-torchvision-latest-primitives/
-* Direct Link to new ResNet50 Training recipe.
+* Улучшение магистралей - как обучать современные модели с использованием новейших примитивов TorchVision => https://pytorch.org/blog/how-to-train-state-of-the-art-models-using-torchvision-latest-primitives/ 
+* Прямая ссылка на новый рецепт приготовления ResNet50.
 
-## Summary and Conclusion
+## Резюме и заключение
 
-In this repo post, we set up an entire pipeline for training the PyTorch Faster RCNN ResNet50 FPN V2 object detection model. Although we were not able to achieve the best fine tuning results, we will surely do so in the future. I hope that you learned something new from this tutorial.
+В этом сообщении о репозитории мы настроили целый конвейер для обучения модели обнаружения объектов PyTorch Faster RCNN ResNet50 FPN V2. Хотя нам не удалось добиться наилучших результатов точной настройки, мы обязательно сделаем это в будущем. Я надеюсь, что вы узнали что-то новое из этого руководства.
