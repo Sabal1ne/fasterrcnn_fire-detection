@@ -42,7 +42,7 @@
 
 #### Обучите более быструю модель RCNN
 
-`python train.py --модель fasterrcnn_resnet50_fpn_v2 --конфигурация data_configs/ppe.yaml --эпохи 50 --название проекта fasterrcnn_resnet50_fpn_v2_ppe --использовать-обучать-август --нет-мозаики`
+`python train.py --model fasterrcnn_resnet50_fpn_v2 --config data_configs/ppe.yaml --epochs 50 --project-name fasterrcnn_resnet50_fpn_v2_ppe --use-train-aug --no-mosaic`
 
 Ниже приведены аргументы командной строки, которые мы используем:
 
@@ -55,7 +55,7 @@
 
 #### Выполняется detect_video.py для вывода видео
 
-`python inference_video.py --взвешивает выходные данные / обучение /fasterrcnn_resnet50_fpn_v2_ppe/best_model.pth --входные данные/inference_data/video_1.mp4 --показать изображение --пороговое значение 0.9 /`
+`python inference_video.py --weights outputs/training/fasterrcnn_resnet50_fpn_v2_ppe/best_model.pth --input data/inference_data/video_1.mp4 --show-image --threshold 0.9`
 
 Ниже приведены аргументы командной строки:
 
@@ -63,16 +63,3 @@
 * --input: путь к исходному видео. Вы также можете указать путь к своим собственным видео.
 * --показать-изображение: это сообщает скрипту, что мы хотим визуализировать результаты на экране.
 * --threshold: Мы используем доверительный порог в 90% для визуализаций.
-
-## Важные ссылки
-
-* https://github.com/pytorch/vision/pull/5763
-* https://github.com/pytorch/vision/pull/5444
-* https://github.com/pytorch/vision/issues/5307
-* https://github.com/pytorch/vision/issues/3995
-* Улучшение магистралей - как обучать современные модели с использованием новейших примитивов TorchVision => https://pytorch.org/blog/how-to-train-state-of-the-art-models-using-torchvision-latest-primitives/ 
-* Прямая ссылка на новый рецепт приготовления ResNet50.
-
-## Резюме и заключение
-
-В этом сообщении о репозитории мы настроили целый конвейер для обучения модели обнаружения объектов PyTorch Faster RCNN ResNet50 FPN V2. Хотя нам не удалось добиться наилучших результатов точной настройки, мы обязательно сделаем это в будущем. Я надеюсь, что вы узнали что-то новое из этого руководства.
