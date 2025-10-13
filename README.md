@@ -164,6 +164,7 @@ SAVE_VALID_PREDICTION_IMAGES: True
 ## 📖 Документация
 
 - [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) - Подробная структура проекта
+- [DATA_FORMAT.md](DATA_FORMAT.md) - Формат данных и аннотаций
 - [TODO.md](TODO.md) - План развития и задачи
 - [CONTRIBUTING.md](CONTRIBUTING.md) - Руководство по контрибуции
 

@@ -104,12 +104,19 @@ def parse_opt():
              loads previous training plots and epochs \
              and also loads the otpimizer state dictionary'
     )
+    parser.add_argument(
+        '--use-wandb', dest='use_wandb', action='store_true',
+        help='enable Weights & Biases logging'
+    )
     args = vars(parser.parse_args())
     return args
 
 def main(args):
-    # Initialize W&B with project name.
-    # wandb_init(name=args['project_name'])
+    # Initialize W&B with project name if enabled
+    if args.get('use_wandb', False):
+        from utils.logging import wandb_init
+        wandb_init(name=args['project_name'])
+    
     # Load the data configurations
     with open(args['config']) as file:
         data_configs = yaml.safe_load(file)
@@ -131,7 +138,6 @@ def main(args):
     COLORS = np.random.uniform(0, 1, size=(len(CLASSES), 3))
     # Set logging file.
     set_log(OUT_DIR)
-    # writer = set_summary_writer(OUT_DIR)
 
     # Model configurations
     IMAGE_WIDTH = args['img_size']
