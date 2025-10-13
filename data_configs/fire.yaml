@@ -1,0 +1,19 @@
+# Images and labels directory should be relative to train.py
+TRAIN_DIR_IMAGES: 'data/train'
+TRAIN_DIR_LABELS: 'data/train'
+VALID_DIR_IMAGES: 'data/test'
+VALID_DIR_LABELS: 'data/test'
+
+# Class names for fire detection
+# 'background' class is added automatically by Faster RCNN
+CLASSES: [
+    '__background__',  # Class 0 (background)
+    'fire',           # Class 1
+    'smoke'           # Class 2
+]
+
+# Number of classes (including background)
+NC: 3
+
+# Whether to save the predictions of the validation set while training.
+SAVE_VALID_PREDICTION_IMAGES: True
