@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  fire-detection:
+    build: .
+    ports:
+      - "7860:7860"
+    environment:
+      - GRADIO_SERVER_NAME=0.0.0.0
+      - GRADIO_SERVER_PORT=7860
+      - GRADIO_SHARE=False
+      # Uncomment to enable authentication
+      # - GRADIO_AUTH=username:password
+    volumes:
+      # Mount your model weights here
+      - ./outputs:/app/outputs
+      - ./data:/app/data
+    restart: unless-stopped
+    # Uncomment for GPU support
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]

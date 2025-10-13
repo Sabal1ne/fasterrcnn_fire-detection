@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: fire-detection
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
+    envVars:
+      - key: GRADIO_SERVER_NAME
+        value: 0.0.0.0
+      - key: GRADIO_SERVER_PORT
+        value: 7860
+      - key: GRADIO_SHARE
+        value: False
+      # Uncomment and set your credentials for authentication
+      # - key: GRADIO_AUTH
+      #   value: username:password

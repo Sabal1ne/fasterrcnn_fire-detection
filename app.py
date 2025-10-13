@@ -16,6 +16,12 @@ from models.create_fasterrcnn_model import create_model
 from utils.annotations import inference_annotations
 from utils.transforms import infer_transforms
 
+# Environment variables for deployment configuration
+GRADIO_SHARE = os.environ.get('GRADIO_SHARE', 'False').lower() in ('true', '1', 't')
+GRADIO_SERVER_NAME = os.environ.get('GRADIO_SERVER_NAME', '0.0.0.0')
+GRADIO_SERVER_PORT = int(os.environ.get('GRADIO_SERVER_PORT', '7860'))
+GRADIO_AUTH = os.environ.get('GRADIO_AUTH', None)  # Format: "username:password"
+
 
 class FireDetectionApp:
     def __init__(self):
@@ -391,9 +397,18 @@ def create_interface():
 
 if __name__ == "__main__":
     demo = create_interface()
+    
+    # Parse authentication if provided
+    auth = None
+    if GRADIO_AUTH:
+        auth_parts = GRADIO_AUTH.split(':')
+        if len(auth_parts) == 2:
+            auth = (auth_parts[0], auth_parts[1])
+    
     demo.launch(
-        server_name="0.0.0.0",
-        server_port=7860,
-        share=False,
-        show_error=True
+        server_name=GRADIO_SERVER_NAME,
+        server_port=GRADIO_SERVER_PORT,
+        share=GRADIO_SHARE,
+        show_error=True,
+        auth=auth
     )
